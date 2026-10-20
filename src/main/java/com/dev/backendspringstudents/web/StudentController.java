@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin("*")
 public class StudentController {
     private StudentRepository studentRepository ;
     private PaymentRepository paymentRepository ;
@@ -77,6 +78,11 @@ public class StudentController {
         String filePath = payment.getFile();
         System.out.println(filePath);
         return Files.readAllBytes(Path.of(URI.create(filePath)));
+    }
+
+    @GetMapping("/payments")
+    List<Payment> getAllPayments(){
+        return paymentRepository.findAll();
     }
 
 }
