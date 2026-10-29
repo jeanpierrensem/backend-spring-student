@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class Payment {
     private double amount;
     private PaymentType type ;
     private PaymentStatus status;
-    private LocalDate date;
+    private Date date;
     private String file ;
     @ManyToOne
     private Student student;

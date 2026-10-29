@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class BackendSpringStudentsApplication {
                     Payment payment = Payment.builder()
                             .status(PaymentStatus.CREATED)
                             .type(values[index])
-                            .date(LocalDate.now())
+                            .date(new Date())
                             .amount(100 + Math.random() * 1000)
                             .file(UUID.randomUUID().toString().concat(".pdf"))
                             .student(student)

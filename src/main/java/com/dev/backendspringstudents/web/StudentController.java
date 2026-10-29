@@ -1,20 +1,19 @@
 package com.dev.backendspringstudents.web;
+import com.dev.backendspringstudents.dto.NewPaymentDto;
 import com.dev.backendspringstudents.entity.Payment;
 import com.dev.backendspringstudents.entity.Student;
 import com.dev.backendspringstudents.enums.PaymentStatus;
-import com.dev.backendspringstudents.enums.PaymentType;
 import com.dev.backendspringstudents.repository.PaymentRepository;
 import com.dev.backendspringstudents.repository.StudentRepository;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.awt.*;
+
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,9 +46,9 @@ public class StudentController {
         return paymentRepository.findByStudentCode(code);
     }
     @PostMapping(value = "/payments", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    Payment savePayment(@RequestParam MultipartFile file, double amount, PaymentType type, LocalDate date, String studentCode) throws IOException {
+    Payment savePayment(@RequestParam ("file") MultipartFile file, NewPaymentDto newPaymentDto ) throws IOException {
 
-        Student student = studentRepository.findByCode(studentCode);
+        Student student = studentRepository.findByCode(newPaymentDto.getStudentCode());
 
         String paymentId = UUID.randomUUID().toString();
         Path path = Paths.get(System.getProperty("user.home"), "students-app-files", "payments");
@@ -62,10 +61,10 @@ public class StudentController {
 
         Payment payment = Payment.builder()
                 .student(student)
-                .date(date)
-                .type(type)
+                .date(newPaymentDto.getDate())
+                .type(newPaymentDto.getType())
                 .status(PaymentStatus.CREATED)
-                .amount(amount)
+                .amount(newPaymentDto.getAmount())
                 .file(filePath.toUri().toString())
                 .build();
         return paymentRepository.save(payment);
